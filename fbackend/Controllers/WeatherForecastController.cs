@@ -29,5 +29,11 @@ namespace fbackend.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet(Name = "Test")]
+        public string GetTest()
+        {
+            return "TESTING WORKS";
+        }
     }
 }
