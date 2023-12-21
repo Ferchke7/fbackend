@@ -21,7 +21,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Push the image to Docker Hub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/container-name:latest
+      run: docker push docker-hub-username/container-name
 
     - name: Pull the image to VM
       uses: appleboy/ssh-action@v1.0.0
@@ -30,7 +30,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: 
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/container-name:latest
-          docker stop container-name || true
-          docker rm container-name || true
-          docker run -d -p 80:80 --name container-name ${{ secrets.DOCKERHUB_USERNAME }}/container-name:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
+          docker stop hello || true
+          docker rm hello || true
+          docker run -d -p 80:80 --name hello ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
