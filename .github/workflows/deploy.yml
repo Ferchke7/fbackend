@@ -30,8 +30,9 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        script: | 
+        script: |
+          set -e    
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/fbackend:latest
-          docker stop fbackend || true
-          docker rm fbackend || true
+          docker stop fbackend
+          docker rm fbackend
           docker run -d -p 80:80 --name fbackend ${{ secrets.DOCKERHUB_USERNAME }}/fbackend:latest
