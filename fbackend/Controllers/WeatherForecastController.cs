@@ -1,8 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace fbackend.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -17,25 +22,22 @@ namespace fbackend.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "Weather")]
+        [HttpGet(Name = "GetWeather")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                TemperatureC = new Random().Next(-20, 55), // Use a new Random instance to avoid issues with shared Random
+                Summary = Summaries[new Random().Next(Summaries.Length)]
             })
             .ToArray();
         }
 
-        [HttpGet(Name = "test")]
+        [HttpGet("test", Name = "GetTest")]
         public string GetInfo()
         {
             return "Default";
         }
-       
-
-        
     }
 }
