@@ -1,0 +1,37 @@
+name: Backend Deployment
+
+on:
+  push:
+    branches: [ "main" ]
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build the Docker image
+      run: docker build . -t $DHUSERNAME/fbackend:latest -f ./fbackend/Dockerfile
+      env:
+        DHUSERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+    - name: Log into Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push the image to Docker Hub
+      run: docker push $DHUSERNAME/fbackend
+      env:
+        DHUSERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+    - name: Pull the image to VM
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: 
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
+          docker stop hello || true
+          docker rm hello || true
+          docker run -d -p 80:80 --name hello ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
