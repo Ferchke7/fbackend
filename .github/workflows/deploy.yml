@@ -35,4 +35,4 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/fbackend:latest
           docker stop fbackend
           docker rm fbackend
-          docker run -d -p 80:80 --name fbackend ${{ secrets.DOCKERHUB_USERNAME }}/fbackend:latest
+          docker run -d -p 3333:80 --name fbackend ${{ secrets.DOCKERHUB_USERNAME }}/fbackend:latest
