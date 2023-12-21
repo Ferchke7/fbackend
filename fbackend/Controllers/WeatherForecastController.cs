@@ -30,6 +30,11 @@ namespace fbackend.Controllers
             .ToArray();
         }
 
+        [HttpGet(Name = "test")]
+        public string GetInfo()
+        {
+            return "Default";
+        }
        
 
         
