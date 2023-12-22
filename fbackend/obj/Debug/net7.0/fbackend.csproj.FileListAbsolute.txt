@@ -32,3 +32,13 @@ D:\fbackend\fbackend\obj\Debug\net7.0\refint\fbackend.dll
 D:\fbackend\fbackend\obj\Debug\net7.0\fbackend.pdb
 D:\fbackend\fbackend\obj\Debug\net7.0\fbackend.genruntimeconfig.cache
 D:\fbackend\fbackend\obj\Debug\net7.0\ref\fbackend.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Humanizer.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Mono.TextTemplating.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Npgsql.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\System.CodeDom.dll
