@@ -42,3 +42,10 @@ D:\fbackend\fbackend\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\fbackend\fbackend\bin\Debug\net7.0\Npgsql.dll
 D:\fbackend\fbackend\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 D:\fbackend\fbackend\bin\Debug\net7.0\System.CodeDom.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+D:\fbackend\fbackend\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
