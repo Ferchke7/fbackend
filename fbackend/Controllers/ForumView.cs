@@ -10,7 +10,6 @@ using System.Diagnostics;
 namespace fbackend.Controllers
 {
     [Route("[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class ForumView : ControllerBase
     {
@@ -38,45 +37,10 @@ namespace fbackend.Controllers
         }
 
         [HttpGet("current-user")]
-        public async Task<IActionResult> GetCurrentUserInfo()
+        public string GetCurrentUserInfo()
         {
-            
-            var userEmailClaim = User.Claims.FirstOrDefault(c => c.Type == "email");
-            // Check if the user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                // Access user information from claims
-                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "sub");
-                
-                if (userIdClaim != null && userEmailClaim != null)
-                {
-                    // Extract user information
-                    var userId = userIdClaim.Value;
-                    var userEmail = userEmailClaim.Value;
-
-                    // Use the user information as needed
-                    return Ok(new { UserId = userId, UserEmail = userEmail });
-                }
-            }
-
-            // Return an error or appropriate response if the user is not authenticated
-            return Unauthorized();
+            return HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
         }
 
-        [HttpGet("get-user-email")]
-        public async Task<IActionResult> GetUserEmailAsync()
-        {
-            var token = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, "access_token");
-            Debug.WriteLine(token);
-            var userEmail = User.FindFirst("email")?.Value;
-            if (string.IsNullOrEmpty(userEmail))
-            {
-                // Handle the case where the email claim is not found
-                return BadRequest("User email not found in claims.");
-            }
-
-            // Your logic when the email claim is found
-            return Ok(new { Email = userEmail });
-        }
     }
 }
