@@ -12,8 +12,8 @@ namespace fbackend.Models
 
         public int UserId { get; set; }
         public string Comment { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.UtcNow;
+        public DateTime UpdateDate { get; set; } = DateTime.UtcNow;
         public int likes { get; set; }
 
 
