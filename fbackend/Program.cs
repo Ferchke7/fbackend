@@ -78,6 +78,7 @@ builder.Services
                       .AllowAnyMethod());
 });
 
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -85,7 +86,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Authentication",
+        Title = "Swagger of FitForFree",
         Version = "v1",
     });
 

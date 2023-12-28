@@ -12,5 +12,6 @@
             CreatedBy = createdBy;
             NewsText = newsText;
         }
+
     }
 }

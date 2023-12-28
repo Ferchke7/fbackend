@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using fbackend.Data;
@@ -11,9 +12,11 @@ using fbackend.Data;
 namespace fbackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228084005_SomeOtherModel")]
+    partial class SomeOtherModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,24 +33,12 @@ namespace fbackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("Likes")
                         .HasColumnType("integer");
 
                     b.Property<string>("TitleName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -94,21 +85,12 @@ namespace fbackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BlogId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -121,8 +103,6 @@ namespace fbackend.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
 
                     b.HasIndex("PostId");
 
@@ -141,17 +121,11 @@ namespace fbackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int?>("PostCommentsId")
                         .HasColumnType("integer");
 
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("likes")
                         .HasColumnType("integer");
@@ -187,7 +161,7 @@ namespace fbackend.Migrations
             modelBuilder.Entity("fbackend.Models.Post", b =>
                 {
                     b.HasOne("fbackend.Models.Blog", "Blog")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -197,10 +171,6 @@ namespace fbackend.Migrations
 
             modelBuilder.Entity("fbackend.Models.PostComments", b =>
                 {
-                    b.HasOne("fbackend.Models.Blog", null)
-                        .WithMany("PostsComments")
-                        .HasForeignKey("BlogId");
-
                     b.HasOne("fbackend.Models.Post", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
@@ -217,7 +187,7 @@ namespace fbackend.Migrations
 
             modelBuilder.Entity("fbackend.Models.Blog", b =>
                 {
-                    b.Navigation("PostsComments");
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("fbackend.Models.Post", b =>

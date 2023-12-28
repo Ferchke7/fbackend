@@ -19,5 +19,9 @@ namespace fbackend.Data
         }
 
         public DbSet<Users> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<PostComments> PostComments { get; set; }
+        public DbSet<PostCommentsReplies> PostCommentsReplies { get; set;}
     }
 }
