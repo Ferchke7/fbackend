@@ -29,6 +29,7 @@ namespace fbackend.Controllers
             {
                 UserId = user.Id,
                 TitleName = post_DTO.TitleName,
+                Author = user.Name,
                 Visiters = 0,
                 Likes = 0,
                 Description = post_DTO.Description,

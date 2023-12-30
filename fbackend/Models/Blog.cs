@@ -11,6 +11,7 @@ namespace fbackend.Models
 
         public string TitleName { get; set; }
         
+        public string Author { get; set; }
         public int Visiters { get; set; }
 
         public int Likes { get; set; }
