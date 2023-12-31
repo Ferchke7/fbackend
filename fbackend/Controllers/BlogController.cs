@@ -43,7 +43,7 @@ namespace fbackend.Controllers
         [HttpGet(Name = "getallpost")]
         public async Task<List<Blog>> GetAllPosts()
         {
-            return await context.Blogs.ToListAsync();
+            return await context.Blogs.OrderByDescending(b => b.CreateDate).ToListAsync();
         }
 
         [HttpDelete("deletePost")]
@@ -67,39 +67,49 @@ namespace fbackend.Controllers
         [HttpPost("postcomment")]
         public async Task<IActionResult> AddCommentIntoBlog(PostComment_DTO postComment_DTO)
         {
-            var getEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-
-            // Find the user
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == getEmail);
-            if (user == null)
+            try
             {
-                return BadRequest("User not found");
+                var getEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
+
+                // Find the user
+                var user = await context.Users.FirstOrDefaultAsync(u => u.Email == getEmail);
+                if (user == null)
+                {
+                    return BadRequest("User not found");
+                }
+
+                // Find the post
+                var post = await context.Blogs.Include(b => b.PostsComments).FirstOrDefaultAsync(b => b.Id == postComment_DTO.PostId);
+                if (post == null)
+                {
+                    return BadRequest("Post not found");
+                }
+
+                var commentObject = new PostComments
+                {
+                    Username = user.Name,
+                    UserId = user.Id,
+                    Comment = postComment_DTO.Comment,
+                    likes = 0,
+                    CreateDate = DateTime.UtcNow,
+                    UpdateDate = DateTime.UtcNow
+                };
+
+                post.PostsComments.Add(commentObject);
+
+                // You may want to consider wrapping this in a try-catch block
+                // to handle potential exceptions during save changes.
+                await context.SaveChangesAsync();
+
+                return Ok();
             }
-
-            // Find the post
-            var post = await context.Blogs.FindAsync(postComment_DTO.PostId);
-            if (post == null)
+            catch (Exception ex)
             {
-                return BadRequest("Post not found");
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
-
-            var commentObject = new PostComments
-            {
-                PostId = postComment_DTO.PostId,
-                Username = user.Name,
-                UserId = user.Id,
-                Comment = postComment_DTO.Comment,
-                likes = 0
-            };
-
-            post.PostsComments.Add(commentObject);
-
-            // You may want to consider wrapping this in a try-catch block
-            // to handle potential exceptions during save changes.
-            await context.SaveChangesAsync();
-
-            return Ok();
         }
+
 
     }
 }
