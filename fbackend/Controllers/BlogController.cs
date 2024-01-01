@@ -50,7 +50,8 @@ namespace fbackend.Controllers
         [ActionName("getallpostwithcomments")]
         public async Task<List<Blog>> GetAllPostWithComments()
         {
-            return await context.Blogs.Include(blog => blog.PostsComments).ToListAsync();
+            
+            return await context.Blogs.OrderByDescending(b => b.CreateDate).Include(blog => blog.PostsComments).ToListAsync();
         }
 
         [HttpDelete("deletePost")]
