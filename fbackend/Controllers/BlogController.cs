@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace fbackend.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class BlogController : ControllerBase
     {
@@ -46,6 +46,13 @@ namespace fbackend.Controllers
             return await context.Blogs.OrderByDescending(b => b.CreateDate).ToListAsync();
         }
 
+        [HttpGet]
+        [ActionName("getallpostwithcomments")]
+        public async Task<List<Blog>> GetAllPostWithComments()
+        {
+            return await context.Blogs.Include(blog => blog.PostsComments).ToListAsync();
+        }
+
         [HttpDelete("deletePost")]
         public async Task<IActionResult> DeleteMyPost(int postId)
         {
@@ -62,54 +69,67 @@ namespace fbackend.Controllers
             return Ok();
         }
 
-
-        //fix it
-        [HttpPost("postcomment")]
-        public async Task<IActionResult> AddCommentIntoBlog(PostComment_DTO postComment_DTO)
+        [HttpGet]
+        [ActionName("GetPostByID")]
+        public async Task<IActionResult> GetPostById(int postId)
         {
-            try
-            {
-                var getEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-
-                // Find the user
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Email == getEmail);
-                if (user == null)
-                {
-                    return BadRequest("User not found");
-                }
-
-                // Find the post
-                var post = await context.Blogs.Include(b => b.PostsComments).FirstOrDefaultAsync(b => b.Id == postComment_DTO.PostId);
-                if (post == null)
-                {
-                    return BadRequest("Post not found");
-                }
-
-                var commentObject = new PostComments
-                {
-                    Username = user.Name,
-                    UserId = user.Id,
-                    Comment = postComment_DTO.Comment,
-                    likes = 0,
-                    CreateDate = DateTime.UtcNow,
-                    UpdateDate = DateTime.UtcNow
-                };
-
-                post.PostsComments.Add(commentObject);
-
-                // You may want to consider wrapping this in a try-catch block
-                // to handle potential exceptions during save changes.
-                await context.SaveChangesAsync();
-
-                return Ok();
+            var post = context.Blogs.Find(postId);
+            if (post is null) { 
+            return BadRequest();
             }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
-            }
+            return Ok(post);
         }
 
+        [HttpGet]
+        [ActionName("GetPostComments")]
+        public async Task<IActionResult> GetCommentsForBlog(int blogId)
+        {
+            var blog = await context.Blogs
+                .Include(b => b.PostsComments)  // Eager load PostComments
+                .FirstOrDefaultAsync(b => b.Id == blogId);
 
+            if (blog == null)
+            {
+                return NotFound("Blog not found");
+            }
+
+            var comments = blog.PostsComments.ToList();
+
+            return Ok(comments);
+        }
+
+        //fix it
+        [HttpPost("{blogId}/comments")]
+        public async Task<IActionResult> AddCommentToBlog(int blogId, [FromBody] PostComment_DTO postComment_DTO)
+        {
+            var getEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
+
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == getEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var blog = await context.Blogs.Include(b => b.PostsComments).FirstOrDefaultAsync(b => b.Id == blogId);
+            if (blog == null)
+            {
+                return NotFound("Blog not found");
+            }
+
+            var commentObject = new PostComments
+            {
+                Username = user.Name,
+                UserId = user.Id,
+                Comment = postComment_DTO.Comment,
+                likes = 0,
+                CreateDate = DateTime.UtcNow,
+                UpdateDate = DateTime.UtcNow
+            };
+
+            blog.PostsComments.Add(commentObject);
+
+            await context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
