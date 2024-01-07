@@ -75,7 +75,7 @@ namespace fbackend.Controllers
         public async Task<IActionResult> GetPostById(int postId)
         {
             var post = context.Blogs.Find(postId);
-            post.Visiters = post.Visiters++;
+           
             await context.SaveChangesAsync();
             if (post is null) { 
             return BadRequest();
@@ -90,6 +90,7 @@ namespace fbackend.Controllers
             var blog = await context.Blogs
                 .Include(b => b.PostsComments)  // Eager load PostComments
                 .FirstOrDefaultAsync(b => b.Id == blogId);
+            blog.Visiters = blog.Visiters++;
 
             if (blog == null)
             {
