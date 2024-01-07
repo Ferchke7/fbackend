@@ -75,6 +75,8 @@ namespace fbackend.Controllers
         public async Task<IActionResult> GetPostById(int postId)
         {
             var post = context.Blogs.Find(postId);
+            post.Visiters = post.Visiters++;
+            await context.SaveChangesAsync();
             if (post is null) { 
             return BadRequest();
             }
