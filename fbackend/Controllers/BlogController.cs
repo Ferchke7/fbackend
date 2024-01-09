@@ -89,6 +89,7 @@ namespace fbackend.Controllers
                 .Include(b => b.PostsComments)  // Eager load PostComments
                 .FirstOrDefaultAsync(b => b.Id == blogId);
             blog.Visiters = blog.Visiters++;
+            context.Blogs.Update(blog);
             await context.SaveChangesAsync();
             if (blog == null)
             {
