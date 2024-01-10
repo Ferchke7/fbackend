@@ -24,7 +24,11 @@ namespace fbackend.Controllers
         {
             var getEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var userTemp = _context.Users.FirstOrDefault(u => u.Email == getEmail);
-            await _context.Routines.AddAsync(
+            if (userTemp != null)
+            {
+                var checkIfRoutineAlreadyExist = _context.Routines.FirstOrDefault(b => b.RoutineName == routine_DTO.RoutineName);
+                if (checkIfRoutineAlreadyExist == null) {
+                    await _context.Routines.AddAsync(
                 new Routine
                 {
                     User = userTemp.Name,
@@ -39,8 +43,15 @@ namespace fbackend.Controllers
                     RoutineName = routine_DTO.RoutineName,
                 }
                 );
-            return Ok(_context.SaveChanges() == 1 ? "saved" : "not saved");
+                    return Ok(_context.SaveChanges() == 1 ? "saved" : "not saved");
+                }
+                else
+                {
+                    return BadRequest("Exercise already exist");
+                }
+            }
             
+            return BadRequest();
         }
 
         [HttpGet]
