@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using fbackend.Data;
@@ -11,9 +12,11 @@ using fbackend.Data;
 namespace fbackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110061420_ChangesOfRoutine1")]
+    partial class ChangesOfRoutine1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,9 +152,11 @@ namespace fbackend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Friday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Monday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RoutineDescription")
@@ -163,15 +168,19 @@ namespace fbackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Saturday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Sunday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Thursday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Tuesday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("User")
@@ -179,6 +188,7 @@ namespace fbackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Wednesday")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using fbackend.Data;
@@ -11,9 +12,11 @@ using fbackend.Data;
 namespace fbackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110055657_ChangeOfRoutineModel")]
+    partial class ChangeOfRoutineModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,13 +151,11 @@ namespace fbackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Friday")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Monday")
-                        .HasColumnType("text");
-
                     b.Property<string>("RoutineDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoutineList")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -162,23 +163,8 @@ namespace fbackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Saturday")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Sunday")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Thursday")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Tuesday")
-                        .HasColumnType("text");
-
                     b.Property<string>("User")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Wednesday")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

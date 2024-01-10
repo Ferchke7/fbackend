@@ -1,4 +1,5 @@
 using fbackend.Data;
+using fbackend.HubFolder;
 using fbackend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -68,16 +69,16 @@ builder.Services.AddAuthentication(o =>
                     }
                 };
             });
+builder.Services.AddSignalR();
 
-builder.Services
-    .AddCors(options =>
-    {
-        options.AddPolicy("AllowOrigin",
-            builder => builder.WithOrigins("*")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -129,6 +130,11 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.MapControllers().RequireAuthorization();
+app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller}/{action}/{id?}");
+app.MapHub<ChattingHub>("/chattingHub");
 
 app.Run();
