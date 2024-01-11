@@ -65,12 +65,7 @@ namespace fbackend.Controllers
             return Ok(routines);
         }
 
-        [HttpPost]
-        [ActionName("Temporary")]
-        public string getTemp()
-        {
-            return "TEMPORARY";
-        }
+        
 
         [HttpDelete]
         [ActionName("DeleteMyRoutine")]
