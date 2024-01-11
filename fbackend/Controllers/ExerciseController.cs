@@ -65,7 +65,7 @@ namespace fbackend.Controllers
             return Ok(routines);
         }
 
-        [HttpGet]
+        [HttpPost]
         [ActionName("Temporary")]
         public string getTemp()
         {
