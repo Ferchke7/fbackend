@@ -61,7 +61,7 @@ namespace fbackend.Controllers
 
             var post = context.Blogs.Find(postId);
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == getEmail);
-            if (post is null && post.UserId != user.Id) {
+            if (post is null) {
                 return BadRequest();
             }
 
