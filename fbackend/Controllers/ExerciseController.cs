@@ -69,11 +69,11 @@ namespace fbackend.Controllers
 
         [HttpDelete]
         [ActionName("DeleteMyRoutine")]
-        public async Task<IActionResult> DeleteMyRoutine(int id)
+        public async Task<IActionResult> DeleteMyRoutine(String routineName)
         {
             var getEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var userTemp = _context.Users.FirstOrDefault(u => u.Email == getEmail);
-            var routine = _context.Routines.Find(id);
+            var routine = _context.Routines.FirstOrDefault(u => u.RoutineName == routineName);
             if (routine.User == userTemp.Name && userTemp != null)
             {
                 _context.Routines.Remove(routine);

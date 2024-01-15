@@ -20,7 +20,7 @@ namespace fbackend.Models
         public string? Sunday { get; set; } 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreateDate { get; set; } = DateTime.UtcNow;
-
+        
 
     }
 }
