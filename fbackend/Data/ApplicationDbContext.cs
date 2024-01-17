@@ -25,7 +25,7 @@ namespace fbackend.Data
         public DbSet<PostCommentsReplies> PostCommentsReplies { get; set;}
 
         public DbSet<Routine> Routines { get; set; }
-
+        public DbSet<NewsArticle> NewsArticles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>()
