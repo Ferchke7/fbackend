@@ -8,7 +8,9 @@ namespace fbackend.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        //make it unique
         public string Name { get; set; }
+        //make it unique
         public string Email { get; set; }
 
         

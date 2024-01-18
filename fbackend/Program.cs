@@ -19,8 +19,6 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(o =>
 {
-    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
             .AddJwtBearer(o =>
@@ -29,11 +27,11 @@ builder.Services.AddAuthentication(o =>
                 o.SaveToken = true;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
+                    ValidateIssuerSigningKey = true,//
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes("pvIEyyinWcq2P30h+PguuDlZCwCCzsbOQI2A0CSt75Va8VhbEenuiOY2HKEB7eYmm2uLVkjibq6sPa6RPos+Fw==")
                     ),
-                    ValidateIssuer = false,
+                    ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidAudience = "authenticated",
                 };
@@ -51,11 +49,12 @@ builder.Services.AddAuthentication(o =>
                         string[] parts = userEmail.Split('@');
                         string userName = parts[0];
                         // Check if the user already exists in the database
+                        //TODO FIND instead
                         var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
 
                         if (existingUser == null)
                         {
-
+                            
                             // User doesn't exist, so initialize and add the user to the database
                             var newUser = new Users
                             {
